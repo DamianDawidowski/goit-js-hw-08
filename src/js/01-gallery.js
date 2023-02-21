@@ -1,4 +1,4 @@
-import * as basicLightbox from 'basiclightbox';
+import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 // Add imports above this line
 import { galleryItems } from './gallery-items';
@@ -9,10 +9,9 @@ const gallery = document.querySelector('.gallery');
 const galleryCreate = galleryItems
   .map(
     image =>
-      `<div class="gallery__item">
-      <a class=gallery__link href=${image.original}>
-      <img class="gallery__image" src=${image.preview} data-source=${image.original} alt="${image.description}" class=image   />
-      </a></div>`
+      `<a class=gallery__item href=${image.original}>
+      <img class="gallery__image" src=${image.preview} alt="${image.description}" />
+      </a>`
   )
 
   .join('');
@@ -26,16 +25,11 @@ function imageClick(event) {
   if (!event.target.classList.contains('gallery__image')) {
     return;
   }
-
-  const instance = basicLightbox.create(`
-        <img src="${event.target.dataset.source}" width='800' height='800'>
-          `);
-  instance.show();
-  gallery.addEventListener('keydown', event => {
-    if (event.key === 'Escape') {
-      instance.close();
-    }
+  let lightbox = new SimpleLightbox('.gallery a', {
+    captionPosition: 'bottom',
+    captionSelector: 'img',
+    captionsData: 'alt',
+    captionType: 'attr',
+    captionDelay: 250,
   });
 }
-
-console.log(galleryItems);
