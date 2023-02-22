@@ -1,5 +1,4 @@
 import throttle from 'lodash.throttle';
-
 const form = document.querySelector('form');
 
 let feedbackFormState = {
@@ -7,40 +6,24 @@ let feedbackFormState = {
   message: '',
 };
 let storedData = JSON.parse(localStorage.getItem('feedback-form-state'));
-//   console.log(storedData);
 feedbackFormState.email = storedData ? storedData.email : '';
 feedbackFormState.message = storedData ? storedData.message : '';
-
-console.log(feedbackFormState.email);
-console.log(feedbackFormState.message);
-const button = document.querySelector('button');
-
 const email = document.querySelector('input');
 const message = document.querySelector('textarea');
-//  console.log(email);
 email.setAttribute('value', feedbackFormState.email);
 message.value = feedbackFormState.message;
-
 form.addEventListener('input', formTrack);
-form.addEventListener('input', throttle(saveStateToLocalStorage, 1000));
+form.addEventListener('input', throttle(saveStateToLocalStorage, 500));
 form.addEventListener('submit', formSubmit);
-
 
 function formTrack(event) {
   event.preventDefault();
   const {
     elements: { email, message },
   } = event.currentTarget;
-
   feedbackFormState = { ...feedbackFormState, email: `${email.value}` };
   feedbackFormState = { ...feedbackFormState, message: `${message.value}` };
-
-  // console.log(feedbackFormState);
-
   console.log(`Email: ${email.value}, Message: ${message.value}`);
-
-  // console.log(inputData);
- 
 }
 
 function formSubmit(event) {
@@ -48,16 +31,11 @@ function formSubmit(event) {
   const {
     elements: { email, message },
   } = event.currentTarget;
-
   feedbackFormState = { ...feedbackFormState, email: '' };
   feedbackFormState = { ...feedbackFormState, message: '' };
-
   console.log(`Email: ${email.value}, Password: ${message.value}`);
-    event.currentTarget.reset();
-    email.setAttribute('value', "");
-    // event.email = "";
-    // event.message = '';
-  // console.log(inputData);
+  event.currentTarget.reset();
+  email.setAttribute('value', '');
   localStorage.clear();
 }
 
