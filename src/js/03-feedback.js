@@ -22,7 +22,9 @@ email.setAttribute('value', feedbackFormState.email);
 message.value = feedbackFormState.message;
 
 form.addEventListener('input', formTrack);
+form.addEventListener('input', throttle(saveStateToLocalStorage, 1000));
 form.addEventListener('submit', formSubmit);
+
 
 function formTrack(event) {
   event.preventDefault();
@@ -38,7 +40,7 @@ function formTrack(event) {
   console.log(`Email: ${email.value}, Message: ${message.value}`);
 
   // console.log(inputData);
-  saveStateToLocalStorage();
+ 
 }
 
 function formSubmit(event) {
@@ -51,7 +53,10 @@ function formSubmit(event) {
   feedbackFormState = { ...feedbackFormState, message: '' };
 
   console.log(`Email: ${email.value}, Password: ${message.value}`);
-  event.currentTarget.reset();
+    event.currentTarget.reset();
+    email.setAttribute('value', "");
+    // event.email = "";
+    // event.message = '';
   // console.log(inputData);
   localStorage.clear();
 }
